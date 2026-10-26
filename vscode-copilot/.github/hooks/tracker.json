@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/trk-hook.mjs session-start copilot",
+        "timeoutSec": 10
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/trk-hook.mjs prompt copilot",
+        "timeoutSec": 5
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/trk-hook.mjs stop copilot",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "name": "tracker-session-start",
+            "description": "Load the bound Tracker context pack",
+            "command": "node \"${extensionPath}${/}hooks${/}trk-hook.mjs\" session-start gemini-cli",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "name": "tracker-prompt",
+            "description": "Record the prompt verbatim as a Tracker input",
+            "command": "node \"${extensionPath}${/}hooks${/}trk-hook.mjs\" prompt gemini-cli",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "name": "tracker-stop",
+            "description": "Mark the bound Tracker work item active",
+            "command": "node \"${extensionPath}${/}hooks${/}trk-hook.mjs\" stop gemini-cli",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}

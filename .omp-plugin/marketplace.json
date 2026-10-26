@@ -1,0 +1,19 @@
+{
+  "name": "zagware-tracker",
+  "owner": {
+    "name": "zagware",
+    "url": "https://tracker.zagware.io"
+  },
+  "metadata": {
+    "description": "Tracker integrations for omp: the remote MCP server, the tracker skill and lifecycle hooks."
+  },
+  "plugins": [
+    {
+      "name": "tracker",
+      "source": "./omp",
+      "description": "Tracker MCP server, the tracker skill and an extension wiring the session lifecycle to trk.",
+      "category": "productivity",
+      "homepage": "https://github.com/zagware/tracker-plugins"
+    }
+  ]
+}

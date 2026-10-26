@@ -1,0 +1,19 @@
+{
+  "name": "zagware-tracker",
+  "owner": {
+    "name": "zagware",
+    "url": "https://tracker.zagware.io"
+  },
+  "metadata": {
+    "description": "Tracker integrations: the remote MCP server, lifecycle hooks and the ask-vs-decide skill."
+  },
+  "plugins": [
+    {
+      "name": "tracker",
+      "source": "./claude-code",
+      "description": "Tracker MCP server, lifecycle hooks and the ask-vs-decide skill.",
+      "category": "productivity",
+      "homepage": "https://github.com/zagware/tracker-plugins"
+    }
+  ]
+}

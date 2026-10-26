@@ -1,0 +1,5 @@
+# Tracker MCP server (Streamable HTTP). OAuth by default: run `codex mcp login tracker` once.
+# To use an agent API token instead, uncomment bearer_token_env_var and export TRACKER_TOKEN.
+[mcp_servers.tracker]
+url = "https://tracker.zagware.io/mcp"
+# bearer_token_env_var = "TRACKER_TOKEN"

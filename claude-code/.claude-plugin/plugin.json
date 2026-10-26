@@ -1,0 +1,18 @@
+{
+  "name": "tracker",
+  "description": "Tracker (tracker.zagware.io): remote MCP server, lifecycle hooks that load the bound work context, capture your prompts verbatim and post progress, and a skill teaching when to ask vs decide.",
+  "version": "0.1.0",
+  "author": {
+    "name": "zagware",
+    "url": "https://tracker.zagware.io"
+  },
+  "homepage": "https://tracker.zagware.io/settings/agents",
+  "repository": "https://github.com/zagware/tracker-plugins",
+  "keywords": [
+    "tracker",
+    "decisions",
+    "intent",
+    "mcp",
+    "agents"
+  ]
+}

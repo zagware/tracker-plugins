@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "tracker": {
+      "type": "http",
+      "url": "https://tracker.zagware.io/mcp"
+    }
+  }
+}

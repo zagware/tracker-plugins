@@ -1,0 +1,38 @@
+{
+  "description": "Tracker lifecycle hooks. Each runs only when `trk` is on PATH and never blocks Claude Code.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook session-start --channel claude-code; exit 0",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook prompt --channel claude-code >/dev/null; exit 0",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook stop --channel claude-code >/dev/null; exit 0",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook session-start --channel codex; exit 0",
+            "statusMessage": "Loading Tracker context",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook prompt --channel codex >/dev/null; exit 0",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook stop --channel codex >/dev/null; echo '{}'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
