@@ -8,6 +8,7 @@
   },
   "homepage": "https://tracker.zagware.io/settings/agents",
   "repository": "https://github.com/zagware/tracker-plugins",
+  "license": "MIT",
   "keywords": [
     "tracker",
     "decisions",

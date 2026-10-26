@@ -68,7 +68,14 @@ decisions, create intents, or record decisions as yours: those need you,
 signed in to Tracker in a browser. The CLI token can read, capture your prompts
 and update work. Nothing more.
 
+## License
+
+[MIT](LICENSE): use, copy and modify these files freely, including in
+commercial and closed-source repos. The Tracker service they connect to is
+not open source.
+
 ---
 
 This repository is generated from `integrations/` in the Tracker source on
-every release. Report problems as issues here.
+every release, so pull requests are not merged here. Report problems as
+issues, and security problems privately (see [SECURITY.md](SECURITY.md)).
