@@ -1,6 +1,6 @@
 {
   "name": "tracker",
-  "description": "Tracker (tracker.zagware.io): remote MCP server, lifecycle hooks that load the bound work context, capture your prompts verbatim and post progress, and a skill teaching when to ask vs decide.",
+  "description": "Tracker (tracker.zagware.io): remote MCP server, lifecycle hooks that load the bound work context, capture your prompts verbatim and mark bound work active, and a skill teaching when to ask vs decide.",
   "version": "0.1.0",
   "author": {
     "name": "zagware",
