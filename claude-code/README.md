@@ -22,11 +22,15 @@ Or inside Claude Code: `/plugin marketplace add zagware/tracker-plugins`, then `
 ## Auth
 
 - **OAuth (default).** Run `/mcp` in Claude Code, pick `tracker`, sign in. Claude Code registers itself with the server through dynamic client registration.
-- **API token.** Create an agent token at <https://tracker.zagware.io/settings/agents>, export it as `TRACKER_TOKEN`, and add the server with a header instead of using OAuth:
+- **API token.** In <https://tracker.zagware.io/settings/agents>, add the agent `Claude Code` and issue it a token, export it as `TRACKER_TOKEN`, and add the server with a header instead of using OAuth:
 
   ```sh
   claude mcp add --transport http tracker https://tracker.zagware.io/mcp --header "Authorization: Bearer $TRACKER_TOKEN"
   ```
+
+## Claude Code's own identity
+
+Run `trk login --agent claude-code` once per machine: `trk` commands Claude Code runs then record as **Claude Code** (verified). To have its commits prove they are Claude Code's, run `trk agent-key claude-code`, register the printed public key under Settings → Agents, and put the printed `env` block in the repo's `.claude/settings.local.json`: git in Claude Code then signs its commits with that key, and yours stay as they are.
 
 ## Hooks need `trk`
 

@@ -43,7 +43,14 @@ Cursor, Codex and Copilot read their configuration from each repository, so thos
 ## Auth
 
 - **OAuth (default).** Every tool above supports remote MCP sign-in. The server URL `https://tracker.zagware.io/mcp` is all it needs; you approve the agent once in the browser. Revoke it in **Settings → Agents**.
-- **API token.** Create an *agent* token in **Settings → Agents**, export it as `TRACKER_TOKEN`, and send `Authorization: Bearer $TRACKER_TOKEN`. Each tool's README shows where the header goes.
+- **API token.** In **Settings → Agents**, add the agent (or pick it) and issue it a token, export it as `TRACKER_TOKEN`, and send `Authorization: Bearer $TRACKER_TOKEN`. Each tool's README shows where the header goes.
+- **`trk` as the agent.** `trk login --agent omp` (or `--agent claude-code`, …) stores a token for that agent. `trk` commands run inside that tool then record as it, not as you; hooks keep using your own token.
+
+Every agent acts with its own credential, so its writes show as that agent, *verified*. A name an agent only reports itself (a commit `Agent:` trailer) shows as *claimed*.
+
+### Sign commits as the agent
+
+`trk agent-key <agent>` creates an SSH signing key for the agent under `~/.config/trk/keys/`, prints the public key to register in **Settings → Agents → Signing keys**, and prints the git settings that make that tool's commits signed with it. They are environment variables (`GIT_CONFIG_COUNT`, `GIT_CONFIG_KEY_n`, `GIT_CONFIG_VALUE_n`), so only that tool's commits are signed; your git config is untouched. Tracker checks the signature of every pushed commit: one signed with a registered key shows as that agent, verified. The omp plugin sets these variables itself once the omp key exists.
 
 ## How the hooks behave
 

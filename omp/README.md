@@ -26,11 +26,15 @@ omp has no shell-command hook files: its hooks are TypeScript extension modules,
 ## Auth
 
 - **OAuth (default).** omp runs the OAuth flow (dynamic client registration) when the server asks for it; to sign in again, `/mcp reauth tracker`.
-- **API token.** Create an agent token at <https://tracker.zagware.io/settings/agents>, export it as `TRACKER_TOKEN`, and define the server in `~/.omp/agent/mcp.json` with a header (omp's own config wins over the plugin's):
+- **API token.** In <https://tracker.zagware.io/settings/agents>, add the agent `omp` and issue it a token, export it as `TRACKER_TOKEN`, and define the server in `~/.omp/agent/mcp.json` with a header (omp's own config wins over the plugin's):
 
   ```json
   { "mcpServers": { "tracker": { "type": "http", "url": "https://tracker.zagware.io/mcp", "headers": { "Authorization": "Bearer ${TRACKER_TOKEN}" } } } }
   ```
+
+## omp's own identity
+
+Run `trk login --agent omp` once per machine: `trk` commands that omp runs then record as **omp** (verified), not as you or another tool. To have omp's commits prove they are omp's, run `trk agent-key omp`, register the printed public key under Settings → Agents → omp, and restart omp: the plugin then signs every commit omp's tools make with that key (through `GIT_CONFIG_*` variables in omp's process; your git config is untouched).
 
 ## Hooks need `trk`
 

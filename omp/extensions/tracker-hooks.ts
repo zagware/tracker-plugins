@@ -5,7 +5,12 @@
 //   session_shutdown → `trk hook session-end` (reports the session file's SHA-256; Tracker records it as claimed)
 // Every handler swallows its own errors and never blocks omp; without `trk` on PATH it does nothing.
 // Subagent sessions are skipped: only the human-facing main session is recorded.
+// When `trk agent-key omp` has created omp's signing key, git in this omp process signs commits with it, so
+// Tracker shows them as omp, verified (DEC-66). The user's own git config is never touched.
 import { type ChildProcess, spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
 
 type HookEvent = "session-start" | "prompt" | "stop";
@@ -97,7 +102,28 @@ function sessionFile(ctx: { sessionManager: unknown }): string | undefined {
 	}
 }
 
+/**
+ * Git reads GIT_CONFIG_COUNT/KEY_n/VALUE_n as config for the processes that
+ * inherit them: every git that omp's tools run. Left alone when the user
+ * already sets GIT_CONFIG_COUNT, so their own extra config is never replaced.
+ */
+function signCommitsAsOmp(): void {
+	const publicKey = join(process.env.XDG_CONFIG_HOME || join(homedir(), ".config"), "trk", "keys", "omp_ed25519.pub");
+	if (process.env.GIT_CONFIG_COUNT !== undefined || !existsSync(publicKey)) return;
+	const entries = [
+		["gpg.format", "ssh"],
+		["user.signingkey", publicKey],
+		["commit.gpgsign", "true"],
+	];
+	process.env.GIT_CONFIG_COUNT = String(entries.length);
+	entries.forEach(([key, value], i) => {
+		process.env[`GIT_CONFIG_KEY_${i}`] = key;
+		process.env[`GIT_CONFIG_VALUE_${i}`] = value;
+	});
+}
+
 export default function trackerHooks(pi: ExtensionAPI): void {
+	signCommitsAsOmp();
 	let contextPack: Promise<string> | undefined;
 
 	pi.on("session_start", async (_event, ctx) => {
