@@ -38,6 +38,19 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "name": "tracker-session-end",
+            "description": "Report the session transcript's SHA-256 to Tracker",
+            "command": "node \"${extensionPath}${/}hooks${/}trk-hook.mjs\" session-end gemini-cli",
+            "timeout": 10000
+          }
+        ]
+      }
     ]
   }
 }

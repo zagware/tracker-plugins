@@ -19,7 +19,7 @@ MCP server only, user-wide: `code --add-mcp '{"name":"tracker","type":"http","ur
 |---|---|
 | `.vscode/mcp.json` | MCP server `tracker`, `type: "http"` → `https://tracker.zagware.io/mcp` (Streamable HTTP) |
 | `.github/copilot-instructions.md` | Tracker rules: fetch context first, ask vs decide, never act as the human, WRK ids and `Agent: Copilot` trailer |
-| `.github/hooks/tracker.json` | Copilot agent hooks (Preview), declared with the VS Code-compatible event names so payloads use `session_id`/`prompt`: `SessionStart` → `trk hook session-start --channel copilot` (context pack returned as `additionalContext`) · `UserPromptSubmit` → `trk hook prompt --channel copilot` (records your prompt verbatim) · `Stop` → `trk hook stop --channel copilot` |
+| `.github/hooks/tracker.json` | Copilot agent hooks (Preview), declared with the VS Code-compatible event names so payloads use `session_id`/`prompt`: `SessionStart` → `trk hook session-start --channel copilot` (context pack returned as `additionalContext`) · `UserPromptSubmit` → `trk hook prompt --channel copilot` (records your prompt verbatim) · `Stop` → `trk hook stop --channel copilot`. No session-end transcript digest: VS Code has no session-end event, and Copilot CLI's `SessionEnd` payload names no transcript |
 | `.github/hooks/trk-hook.mjs` | Bridge the hooks run with `node`: forwards the hook JSON to `trk` and prints the JSON Copilot parses on stdout. Always exits 0 |
 
 The hooks apply to sessions on the **Copilot** session target (VS Code, Copilot CLI and the Copilot app share this hook format). Copilot cloud agent also reads `.github/hooks/`, but has no `trk` login, so the hooks no-op there.

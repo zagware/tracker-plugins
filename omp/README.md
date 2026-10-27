@@ -19,9 +19,9 @@ Restart omp afterwards (new extension modules load at session start). MCP server
 | `package.json` | Plugin manifest: package `@zagware/omp-tracker`, `omp.extensions` → `extensions/tracker-hooks.ts` |
 | `mcp.json` | Remote MCP server `tracker`, `type: "http"` → `https://tracker.zagware.io/mcp` (Streamable HTTP) |
 | `skills/tracker/SKILL.md` | When to ask vs decide, fetch context first, never act as the human, WRK ids and `Agent: omp` trailer |
-| `extensions/tracker-hooks.ts` | `session_start` → `trk hook session-start --channel omp` (the context pack is added to the first prompt) · `input` → `trk hook prompt --channel omp` (records your prompt verbatim, without delaying it) · `session_stop` → `trk hook stop --channel omp`. Subagent sessions are skipped; handlers never throw |
+| `extensions/tracker-hooks.ts` | `session_start` → `trk hook session-start --channel omp` (the context pack and its receipt are added to the first prompt) · `input` → `trk hook prompt --channel omp` (records your prompt verbatim, without delaying it) · `session_stop` → `trk hook stop --channel omp` · `session_shutdown` → `trk hook session-end --channel omp`, detached so it outlives omp's 2-second shutdown budget (records the SHA-256 of the session JSONL file as a claimed transcript digest; nothing for `--no-session`). Subagent sessions are skipped; handlers never throw |
 
-omp has no shell-command hook files: its hooks are TypeScript extension modules, so the extension spawns `trk` itself and feeds it the same JSON shape as Claude Code's hooks (`session_id`, `cwd`, `hook_event_name`, `prompt`).
+omp has no shell-command hook files: its hooks are TypeScript extension modules, so the extension spawns `trk` itself and feeds it the same JSON shape as Claude Code's hooks (`session_id`, `cwd`, `hook_event_name`, `prompt`, `transcript_path`).
 
 ## Auth
 

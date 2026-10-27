@@ -30,12 +30,12 @@ With a plugin installed, your agent:
 
 | Tool | Install | Hooks |
 |---|---|---|
-| [Claude Code](claude-code/) | `claude plugin marketplace add zagware/tracker-plugins && claude plugin install tracker@zagware-tracker` | SessionStart, UserPromptSubmit, Stop |
-| [omp](omp/) | `omp plugin marketplace add zagware/tracker-plugins && omp plugin install tracker@zagware-tracker` | Extension: `session_start`, `input`, `session_stop` |
-| [Gemini CLI](gemini-cli/) | `gemini extensions install https://github.com/zagware/tracker-plugins` | SessionStart, BeforeAgent, AfterAgent |
-| [Cursor](cursor/) | clone once, then in your repo `cp -Rn ~/.tracker-plugins/cursor/.cursor .` | sessionStart, beforeSubmitPrompt, stop |
-| [Codex](codex/) | clone once, then in your repo `cp -Rn ~/.tracker-plugins/codex/.codex . && cat ~/.tracker-plugins/codex/AGENTS.md >> AGENTS.md && codex mcp login tracker` | SessionStart, UserPromptSubmit, Stop |
-| [VS Code + Copilot](vscode-copilot/) | clone once, then in your repo `cp -Rn ~/.tracker-plugins/vscode-copilot/.vscode ~/.tracker-plugins/vscode-copilot/.github .` | SessionStart, UserPromptSubmit, Stop (Copilot hooks, Preview) |
+| [Claude Code](claude-code/) | `claude plugin marketplace add zagware/tracker-plugins && claude plugin install tracker@zagware-tracker` | SessionStart, UserPromptSubmit, Stop, SessionEnd |
+| [omp](omp/) | `omp plugin marketplace add zagware/tracker-plugins && omp plugin install tracker@zagware-tracker` | Extension: `session_start`, `input`, `session_stop`, `session_shutdown` |
+| [Gemini CLI](gemini-cli/) | `gemini extensions install https://github.com/zagware/tracker-plugins` | SessionStart, BeforeAgent, AfterAgent, SessionEnd |
+| [Cursor](cursor/) | clone once, then in your repo `cp -Rn ~/.tracker-plugins/cursor/.cursor .` | sessionStart, beforeSubmitPrompt, stop, sessionEnd |
+| [Codex](codex/) | clone once, then in your repo `cp -Rn ~/.tracker-plugins/codex/.codex . && cat ~/.tracker-plugins/codex/AGENTS.md >> AGENTS.md && codex mcp login tracker` | SessionStart, UserPromptSubmit, Stop, SessionEnd |
+| [VS Code + Copilot](vscode-copilot/) | clone once, then in your repo `cp -Rn ~/.tracker-plugins/vscode-copilot/.vscode ~/.tracker-plugins/vscode-copilot/.github .` | SessionStart, UserPromptSubmit, Stop (Copilot hooks, Preview; no session end with a transcript) |
 
 "Clone once" means `git clone --depth 1 https://github.com/zagware/tracker-plugins ~/.tracker-plugins`.
 Cursor, Codex and Copilot read their configuration from each repository, so those files are copied rather than installed.
@@ -49,9 +49,10 @@ Cursor, Codex and Copilot read their configuration from each repository, so thos
 
 | Hook | Runs | Effect |
 |---|---|---|
-| session start | `trk hook session-start --channel <tool>` | Prints the bound context pack; the tool adds it to the conversation |
+| session start | `trk hook session-start --channel <tool>` | Prints the bound context pack and its receipt (`RCP-n`, the SHA-256 of the exact pack); the tool adds both to the conversation, and the agent cites the receipt on its writes (`contextReceipts`) |
 | prompt submit | `trk hook prompt --channel <tool>` | Records your prompt verbatim as human input (`INP-n`), marked *unverified* because it came from a local tool |
 | stop | `trk hook stop --channel <tool>` | Marks the bound work item active if it was still proposed or ready; otherwise writes nothing |
+| session end | `trk hook session-end --channel <tool>` | Hashes the session transcript the tool names (SHA-256, streamed locally) and records the digest in the project's evidence ledger as *claimed*; the transcript itself never leaves your machine |
 
 Hooks always exit 0 and never block the tool. A repo that isn't bound gets
 nothing. Bindings are stored in `~/.config/trk/bindings.json`, never in the

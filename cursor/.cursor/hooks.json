@@ -18,6 +18,12 @@
         "command": "node .cursor/hooks/trk-hook.mjs stop cursor",
         "timeout": 10
       }
+    ],
+    "sessionEnd": [
+      {
+        "command": "node .cursor/hooks/trk-hook.mjs session-end cursor",
+        "timeout": 10
+      }
     ]
   }
 }

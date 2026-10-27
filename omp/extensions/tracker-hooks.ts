@@ -1,7 +1,8 @@
 // Wires omp's session lifecycle to the Tracker CLI (`trk hook <event> --channel omp`):
-//   session_start → `trk hook session-start` (its stdout, the bound context pack, is added before the first prompt)
-//   input         → `trk hook prompt` (records the human's prompt verbatim as an Input)
-//   session_stop  → `trk hook stop` (marks the bound work item active once work starts)
+//   session_start    → `trk hook session-start` (its stdout, the bound context pack, is added before the first prompt)
+//   input            → `trk hook prompt` (records the human's prompt verbatim as an Input)
+//   session_stop     → `trk hook stop` (marks the bound work item active once work starts)
+//   session_shutdown → `trk hook session-end` (reports the session file's SHA-256; Tracker records it as claimed)
 // Every handler swallows its own errors and never blocks omp; without `trk` on PATH it does nothing.
 // Subagent sessions are skipped: only the human-facing main session is recorded.
 import { type ChildProcess, spawn } from "node:child_process";
@@ -14,6 +15,7 @@ interface TrkPayload {
 	cwd: string;
 	hook_event_name: string;
 	prompt?: string;
+	transcript_path?: string;
 }
 
 const TIMEOUT_MS: Record<HookEvent, number> = { "session-start": 10_000, prompt: 5_000, stop: 10_000 };
@@ -53,10 +55,43 @@ function runTrk(event: HookEvent, payload: TrkPayload): Promise<string> {
 	return promise;
 }
 
+/**
+ * Runs `trk hook session-end` detached and forgets it: omp gives shutdown
+ * handlers 2 s, hashing the transcript and posting may take longer, and the
+ * child must outlive omp's exit.
+ */
+function reportTranscript(payload: TrkPayload): void {
+	try {
+		const child = spawn("trk", ["hook", "session-end", "--channel", "omp"], {
+			cwd: payload.cwd,
+			stdio: ["pipe", "ignore", "ignore"],
+			detached: true,
+			shell: process.platform === "win32",
+			windowsHide: true,
+		});
+		child.on("error", () => {});
+		child.stdin?.on("error", () => {});
+		child.stdin?.end(JSON.stringify(payload));
+		child.unref();
+	} catch {
+		// No trk: nothing to report.
+	}
+}
+
 function sessionId(ctx: { sessionManager: unknown }): string | undefined {
 	try {
 		const manager = ctx.sessionManager as { getSessionId?: () => string | undefined };
 		return manager.getSessionId?.();
+	} catch {
+		return undefined;
+	}
+}
+
+/** The session's JSONL file; PI_SESSION_FILE (set in omp sessions) when the manager does not say. Empty means not persisted. */
+function sessionFile(ctx: { sessionManager: unknown }): string | undefined {
+	try {
+		const manager = ctx.sessionManager as { getSessionFile?: () => string | undefined };
+		return manager.getSessionFile?.() || process.env.PI_SESSION_FILE || undefined;
 	} catch {
 		return undefined;
 	}
@@ -98,5 +133,12 @@ export default function trackerHooks(pi: ExtensionAPI): void {
 	pi.on("session_stop", async (_event, ctx) => {
 		if (ctx.agent?.kind === "sub") return;
 		await runTrk("stop", { session_id: sessionId(ctx), cwd: ctx.cwd, hook_event_name: "Stop" });
+	});
+
+	pi.on("session_shutdown", async (_event, ctx) => {
+		if (ctx.agent?.kind === "sub") return;
+		const transcript = sessionFile(ctx);
+		if (!transcript) return;
+		reportTranscript({ session_id: sessionId(ctx), cwd: ctx.cwd, hook_event_name: "SessionEnd", transcript_path: transcript });
 	});
 }

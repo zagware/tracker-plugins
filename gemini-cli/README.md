@@ -16,7 +16,7 @@ Update with `gemini extensions update tracker`. Restart Gemini CLI afterwards.
 |---|---|
 | `../gemini-extension.json` | Remote MCP server `tracker` → `httpUrl: https://tracker.zagware.io/mcp` (Streamable HTTP); loads `GEMINI.md` |
 | `../GEMINI.md` | Tracker rules: fetch context first, ask vs decide, never act as the human, WRK ids and `Agent: Gemini` trailer |
-| `../hooks/hooks.json` | `SessionStart` → `trk hook session-start --channel gemini-cli` (context pack returned as `hookSpecificOutput.additionalContext`) · `BeforeAgent` → `trk hook prompt --channel gemini-cli` (records your prompt verbatim) · `AfterAgent` → `trk hook stop --channel gemini-cli` |
+| `../hooks/hooks.json` | `SessionStart` → `trk hook session-start --channel gemini-cli` (context pack returned as `hookSpecificOutput.additionalContext`) · `BeforeAgent` → `trk hook prompt --channel gemini-cli` (records your prompt verbatim) · `AfterAgent` → `trk hook stop --channel gemini-cli` · `SessionEnd` → `trk hook session-end --channel gemini-cli` (records the SHA-256 of `transcript_path` as a claimed transcript digest; nothing when Gemini sends an empty path) |
 | `../hooks/trk-hook.mjs` | Bridge the hooks run with `node`: forwards Gemini's hook JSON to `trk` and prints the JSON Gemini requires on stdout. Always exits 0 |
 
 ## Auth

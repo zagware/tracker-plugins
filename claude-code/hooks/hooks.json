@@ -33,6 +33,17 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v trk >/dev/null 2>&1 && trk hook session-end --channel claude-code >/dev/null; exit 0",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }

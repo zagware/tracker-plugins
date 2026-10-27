@@ -15,7 +15,7 @@ Or inside Claude Code: `/plugin marketplace add zagware/tracker-plugins`, then `
 | File | Does |
 |---|---|
 | `.mcp.json` | Remote MCP server `tracker` → `https://tracker.zagware.io/mcp` (Streamable HTTP) |
-| `hooks/hooks.json` | `SessionStart` → `trk hook session-start --channel claude-code` (its stdout, the bound context pack, becomes context) · `UserPromptSubmit` → `trk hook prompt --channel claude-code` (records your prompt verbatim as an Input) · `Stop` → `trk hook stop --channel claude-code` (marks the bound work item active once work starts) |
+| `hooks/hooks.json` | `SessionStart` → `trk hook session-start --channel claude-code` (its stdout, the bound context pack and its receipt, becomes context) · `UserPromptSubmit` → `trk hook prompt --channel claude-code` (records your prompt verbatim as an Input) · `Stop` → `trk hook stop --channel claude-code` (marks the bound work item active once work starts) · `SessionEnd` → `trk hook session-end --channel claude-code` (records the SHA-256 of `transcript_path` as a claimed transcript digest) |
 | `skills/tracker/SKILL.md` | When to ask vs decide, fetch context first, WRK ids and the `Agent: Claude` trailer in commits |
 | `.claude-plugin/plugin.json` | Plugin manifest (the marketplace is `../.claude-plugin/marketplace.json`) |
 

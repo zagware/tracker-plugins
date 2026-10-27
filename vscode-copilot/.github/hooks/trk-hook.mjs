@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Bridges a tool's hook to `trk hook <event> --channel <channel>`.
-// Usage: node trk-hook.mjs <session-start|prompt|stop> <cursor|gemini-cli|copilot>
+// Usage: node trk-hook.mjs <session-start|prompt|stop|session-end> <cursor|gemini-cli|copilot>
 // Forwards the hook JSON from stdin to trk, then prints the JSON the tool expects on stdout
 // (these tools parse hook stdout as JSON, while trk prints the context pack as plain markdown).
 // Never blocks the tool: always exits 0, prints a no-op answer when trk is missing or fails.
@@ -58,7 +58,7 @@ function answer(context) {
 }
 
 let context = "";
-if (["session-start", "prompt", "stop"].includes(event) && channel) {
+if (["session-start", "prompt", "stop", "session-end"].includes(event) && channel) {
   const payload = parse(readStdin());
   context = runTrk(payload, workingDir(payload));
 }

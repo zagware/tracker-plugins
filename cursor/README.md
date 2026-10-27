@@ -19,7 +19,7 @@ MCP server only, user-wide: open `cursor://anysphere.cursor-deeplink/mcp/install
 |---|---|
 | `.cursor/mcp.json` | Remote MCP server `tracker` → `https://tracker.zagware.io/mcp` (Streamable HTTP) |
 | `.cursor/rules/tracker.mdc` | Always-applied rule: fetch context first, ask vs decide, never act as the human, WRK ids and `Agent: Cursor` trailer |
-| `.cursor/hooks.json` | `sessionStart` → `trk hook session-start --channel cursor` (context pack returned as `additional_context`) · `beforeSubmitPrompt` → `trk hook prompt --channel cursor` (records your prompt verbatim; always answers `{"continue": true}`) · `stop` → `trk hook stop --channel cursor` |
+| `.cursor/hooks.json` | `sessionStart` → `trk hook session-start --channel cursor` (context pack returned as `additional_context`) · `beforeSubmitPrompt` → `trk hook prompt --channel cursor` (records your prompt verbatim; always answers `{"continue": true}`) · `stop` → `trk hook stop --channel cursor` · `sessionEnd` → `trk hook session-end --channel cursor` (records the SHA-256 of `transcript_path` as a claimed transcript digest; nothing when transcripts are disabled) |
 | `.cursor/hooks/trk-hook.mjs` | Bridge the hooks run with `node`: forwards Cursor's hook JSON to `trk` (adding `cwd` from `workspace_roots`) and turns its output into the JSON Cursor expects. Always exits 0 |
 
 ## Auth

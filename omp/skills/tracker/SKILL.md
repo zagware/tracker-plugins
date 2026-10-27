@@ -9,7 +9,7 @@ Tracker records what humans want, what agents asked and decided (with origin), t
 
 ## Before you start
 
-- Fetch the context pack first: `get_context {project, id}` for the work item (or `trk context <id>`). If the session opened with a Tracker context pack, that is it. It holds everything binding on the work.
+- Fetch the context pack first: `get_context {project, id}` for the work item (or `trk context <id>`). If the session opened with a Tracker context pack, that is it. It holds everything binding on the work. Each pack comes with a receipt (`RCP-n`): pass `contextReceipts: ["RCP-n"]` on every write you make with it, and add a `Tracker-Context: RCP-n` trailer to your commits.
 - Human words — intent statements, answers, captured inputs (`INP-n`) — are verbatim and binding. Your restatement never overrides them. A decision a human overrode is not binding; follow its review note.
 
 ## Ask or decide

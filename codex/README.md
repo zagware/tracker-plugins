@@ -19,7 +19,7 @@ Project `.codex/` config and hooks load only in a trusted project. MCP server on
 |---|---|
 | `.codex/config.toml` | `[mcp_servers.tracker]` → `url = "https://tracker.zagware.io/mcp"` (Streamable HTTP) |
 | `AGENTS.md` | Tracker section: fetch context first, ask vs decide, never act as the human, WRK ids and `Agent: Codex` trailer |
-| `.codex/hooks.json` | `SessionStart` → `trk hook session-start --channel codex` (plain stdout becomes developer context) · `UserPromptSubmit` → `trk hook prompt --channel codex` (records your prompt verbatim) · `Stop` → `trk hook stop --channel codex` (prints `{}`, the no-op answer `Stop` requires) |
+| `.codex/hooks.json` | `SessionStart` → `trk hook session-start --channel codex` (plain stdout becomes developer context) · `UserPromptSubmit` → `trk hook prompt --channel codex` (records your prompt verbatim) · `Stop` → `trk hook stop --channel codex` (prints `{}`, the no-op answer `Stop` requires) · `SessionEnd` → `trk hook session-end --channel codex` (records the SHA-256 of `transcript_path` as a claimed transcript digest; Codex allows it at most 3 seconds) |
 
 Codex asks you to review and trust new hooks before they run: open `/hooks` after copying.
 
