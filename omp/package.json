@@ -1,6 +1,6 @@
 {
   "name": "@zagware/omp-tracker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Tracker (tracker.zagware.io) for omp: remote MCP server, the tracker skill, and lifecycle hooks calling `trk`.",
   "license": "MIT",

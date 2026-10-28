@@ -1,6 +1,6 @@
 {
   "name": "tracker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tracker (tracker.zagware.io): remote MCP server, Tracker rules, and hooks that load the bound work context, capture your prompts verbatim and mark bound work active.",
   "mcpServers": {
     "tracker": {
