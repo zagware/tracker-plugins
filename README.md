@@ -52,6 +52,8 @@ Every agent acts with its own credential, so its writes show as that agent, *ver
 
 `trk agent-key <agent>` creates an SSH signing key for the agent under `~/.config/trk/keys/`, prints the public key to register in **Settings → Agents → Signing keys**, and prints the git settings that make that tool's commits signed with it. They are environment variables (`GIT_CONFIG_COUNT`, `GIT_CONFIG_KEY_n`, `GIT_CONFIG_VALUE_n`), so only that tool's commits are signed; your git config is untouched. Tracker checks the signature of every pushed commit: one signed with a registered key shows as that agent, verified. The omp plugin sets these variables itself once the omp key exists.
 
+To check a commit locally, `git log -1 --format=%G?` needs `gpg.ssh.allowedSignersFile` listing the key; without one git prints `N` (no signature) even for a signed commit. `git cat-file commit HEAD` shows the `gpgsig` header either way.
+
 ## How the hooks behave
 
 | Hook | Runs | Effect |
